@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Route, NavLink } from 'react-router-dom';
 
 import FriendsList from './components/FriendsList';
 import Form from './components/form/Form';
@@ -88,12 +89,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <nav className="nav-links">
+          <NavLink to = "/friend-form">Add Friend</NavLink>
+        </nav>
         <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} />
-          <div className="friends-list">
+        <Route exact path ="/" render={props => <FriendsList {...props} friends={this.state.friends} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} />} />
+         {/* {<div className="friends-list">
             {this.state.friends.map(friend => {
-              return <FriendsList friend={friend} key={friend.id} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} />
-            })}
-          </div>
+             return <FriendsList friend={friend} key={friend.id} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} />
+          })}
+          </div>} */}
       </div>
     );
   }

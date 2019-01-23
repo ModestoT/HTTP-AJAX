@@ -1,15 +1,14 @@
 import React from 'react';
 
+import Friend from './Friend';
 import './FriendsList.css';
 
-function FriendsList (props) {
-    return(
-        <div className="friend-info">
-            <h1>Name: {props.friend.name}</h1>
-            <h2>Email: {props.friend.email}</h2>
-            <h2>Age: {props.friend.age}</h2>  
-            <button onClick={() => props.updateFriend(props.friend.id)}>Update Friend</button>   
-            <button onClick={() => props.deleteFriend(props.friend.id)}>Delete Friend</button>
+function FriendsList (props){
+    return (
+        <div className="friends-list">
+            {props.friends.map(friend => {
+              return <Friend friend={friend} key={friend.id} updateFriend={props.updateFriend} deleteFriend={props.deleteFriend} />
+            })}
         </div>
     );
 }
