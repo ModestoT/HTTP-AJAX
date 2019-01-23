@@ -35,6 +35,20 @@ class App extends Component {
     }
   }
 
+  addNewFriend = e => {
+    e.preventDefault();
+    const newFriend = {name: this.state.name, age: this.state.age, email: this.state.email};
+
+    axios
+      .post('http://localhost:5000/friends', newFriend)
+      .then(res => {
+        this.setState({friends: res.data});
+      })
+      .catch(err => {
+        console.log(err.response);
+      })
+  }
+
   componentDidMount() {
     axios
       .get('http://localhost:5000/friends')
@@ -49,7 +63,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput}/>
+        <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} />
           <div className="friends-list">
             {this.state.friends.map(friend => {
               return <FriendsList friend={friend} key={friend.id}/>
