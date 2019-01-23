@@ -9,8 +9,30 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-        friends: []
+        friends: [],
+        name: '',
+        age: '',
+        email: ''
     };
+  }
+
+
+  handleInput = e => {
+    const target = e.target.placeholder.toLowerCase();
+
+    switch(target){
+      case 'name':
+        this.setState({name: e.target.value});
+        break;
+      case 'age':
+        this.setState({age: e.target.value});
+        break;
+      case 'email':
+        this.setState({email: e.target.value});
+        break;
+      default:
+        console.log("invalid input")
+    }
   }
 
   componentDidMount() {
@@ -27,10 +49,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Form />
+        <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput}/>
           <div className="friends-list">
             {this.state.friends.map(friend => {
-              return <FriendsList friend={friend}/>
+              return <FriendsList friend={friend} key={friend.id}/>
             })}
           </div>
       </div>
