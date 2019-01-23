@@ -42,7 +42,20 @@ class App extends Component {
     axios
       .post('http://localhost:5000/friends', newFriend)
       .then(res => {
-        this.setState({friends: res.data});
+        this.setState({friends: res.data, name: '', age: '', email: '' });
+      })
+      .catch(err => {
+        console.log(err.response);
+      })
+  }
+
+  updateFriend = id => {
+    const updatedFriend = {name: this.state.name, age: this.state.age, email: this.state.email};
+
+    axios
+      .put(`http://localhost:5000/friends/${id}`, updatedFriend)
+      .then(res => {
+        this.setState({friends: res.data, name: '', age: '', email: '' });
       })
       .catch(err => {
         console.log(err.response);
@@ -66,7 +79,7 @@ class App extends Component {
         <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} />
           <div className="friends-list">
             {this.state.friends.map(friend => {
-              return <FriendsList friend={friend} key={friend.id}/>
+              return <FriendsList friend={friend} key={friend.id} updateFriend={this.updateFriend} />
             })}
           </div>
       </div>
