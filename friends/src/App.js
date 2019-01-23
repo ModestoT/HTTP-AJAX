@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import FriendsList from './components/FriendsList';
-import Form from './components/Form';
+import Form from './components/form/Form';
 import './App.css';
 
 class App extends Component {
