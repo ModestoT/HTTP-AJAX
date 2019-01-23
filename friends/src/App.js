@@ -26,7 +26,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <FriendsList friends={this.state.friends}/>
+          <div className="friends-list">
+            {this.state.friends.map(friend => {
+              return <FriendsList friend={friend}/>
+            })}
+          </div>
       </div>
     );
   }
