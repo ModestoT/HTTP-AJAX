@@ -62,6 +62,18 @@ class App extends Component {
       })
   }
 
+  deleteFriend = id => {
+
+    axios
+     .delete(`http://localhost:5000/friends/${id}`)
+     .then(res => {
+       this.setState({friends: res.data});
+     })
+     .catch(err => {
+       console.log(err.response);
+     })
+  }
+
   componentDidMount() {
     axios
       .get('http://localhost:5000/friends')
@@ -79,7 +91,7 @@ class App extends Component {
         <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} />
           <div className="friends-list">
             {this.state.friends.map(friend => {
-              return <FriendsList friend={friend} key={friend.id} updateFriend={this.updateFriend} />
+              return <FriendsList friend={friend} key={friend.id} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} />
             })}
           </div>
       </div>
