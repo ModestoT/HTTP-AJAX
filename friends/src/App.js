@@ -4,7 +4,6 @@ import {Route, NavLink, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import FriendsList from './components/FriendsList';
 import Form from './components/form/Form';
-import UpdateForm from './components/form/UpdateForm';
 import './App.css';
 
 class App extends Component {
@@ -15,7 +14,8 @@ class App extends Component {
         name: '',
         age: '',
         email: '',
-        friendId: ''
+        friendId: '',
+        isUpdating: false
     };
   }
 
@@ -38,8 +38,7 @@ class App extends Component {
     }
   }
 
-  addNewFriend = e => {
-    e.preventDefault();
+  addNewFriend = () => {
     const newFriend = {name: this.state.name, age: this.state.age, email: this.state.email};
 
     axios
@@ -53,14 +52,13 @@ class App extends Component {
       });
   }
 
-  updateFriend = (e, id) => {
-    e.preventDefault();
+  updateFriend = (id) => {
     const updatedFriend = {name: this.state.name, age: this.state.age, email: this.state.email};
 
     axios
       .put(`http://localhost:5000/friends/${id}`, updatedFriend)
       .then(res => {
-        this.setState({friends: res.data, name: '', age: '', email: ''});
+        this.setState({friends: res.data, name: '', age: '', email: '', isUpdating:false});
         this.props.history.push("/");
       })
       .catch(err => {
@@ -68,7 +66,8 @@ class App extends Component {
       })
   }
 
-  deleteFriend = id => {
+  deleteFriend = (e, id) => {
+    e.preventDefault();
 
     axios
      .delete(`http://localhost:5000/friends/${id}`)
@@ -78,6 +77,20 @@ class App extends Component {
      .catch(err => {
        console.log(err.response);
      })
+  }
+
+  populateForm = (e, id) => {
+    e.preventDefault();
+    const tempFriend = this.state.friends.find(friend => friend.id === id);
+
+    this.setState({ 
+      name: tempFriend.name,
+      email: tempFriend.email,
+      age: tempFriend.age,
+      friendId: tempFriend.id,
+      isUpdating: true
+    });
+    this.props.history.push('/friend-form');
   }
 
   componentDidMount() {
@@ -92,20 +105,15 @@ class App extends Component {
   }
 
   render() {
-    // if(this.state.toForm === true){
-    //   return <Redirect to="/friend-form" />
-    // }
     return (
       <div className="App">
         <nav className="nav-links">
           <NavLink to = "/">Home</NavLink>
           <NavLink to = "/friend-form">Add Friend</NavLink>
         </nav>
-        {/* <Form name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} /> */}
         <Switch>
-          <Route exact path ="/" render={props => <FriendsList {...props} friends={this.state.friends} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} />} />
-          <Route path ="/friend-form" render={props => <Form {...props} name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend}/>} />
-          <Route path ="/update-form/:id" render={props => <UpdateForm {...props} friends={this.state.friends} name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} updateFriend={this.updateFriend}/>} />
+          <Route exact path ="/" render={props => <FriendsList {...props} friends={this.state.friends} updateFriend={this.updateFriend} deleteFriend={this.deleteFriend} populateForm={this.populateForm} />} />
+          <Route path ="/friend-form" render={props => <Form {...props} friends={this.state.friends} friendId={this.state.friendId} name={this.state.name} age={this.state.age} email={this.state.email} handleInput={this.handleInput} addNewFriend={this.addNewFriend} isUpdating={this.state.isUpdating} updateFriend={this.updateFriend}/>} />
           <Redirect to="/" />
         </Switch>
       </div>
