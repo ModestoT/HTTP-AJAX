@@ -16,11 +16,11 @@ function Form (props) {
     return (
         <div className="form-wrapper">
             <h2>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</h2>
-            <form>
+            <form onSubmit={handleSumbit}>
                 <input placeholder="Name" value={props.name} onChange={props.handleInput}/>
                 <input placeholder="Email" value={props.email} onChange={props.handleInput}/>
                 <input placeholder="Age" value={props.age} onChange={props.handleInput}/>
-                <button onClick={handleSumbit}>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</button>
+                <button>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</button>
             </form>
         </div>
     );
