@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Route, NavLink, Redirect, Switch } from 'react-router-dom';
+import {Route, NavLink, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import FriendsList from './components/FriendsList';
 import Form from './components/form/Form';
@@ -46,19 +46,22 @@ class App extends Component {
       .post('http://localhost:5000/friends', newFriend)
       .then(res => {
         this.setState({friends: res.data, name: '', age: '', email: ''});
+        this.props.history.push("/");
       })
       .catch(err => {
         console.log(err.response);
       });
   }
 
-  updateFriend = id => {
+  updateFriend = (e, id) => {
+    e.preventDefault();
     const updatedFriend = {name: this.state.name, age: this.state.age, email: this.state.email};
 
     axios
       .put(`http://localhost:5000/friends/${id}`, updatedFriend)
       .then(res => {
         this.setState({friends: res.data, name: '', age: '', email: ''});
+        this.props.history.push("/");
       })
       .catch(err => {
         console.log(err.response);
@@ -110,4 +113,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
