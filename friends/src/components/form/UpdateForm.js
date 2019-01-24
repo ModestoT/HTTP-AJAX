@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './Form.css';
 
 function UpdateForm (props) {
@@ -11,7 +13,11 @@ function UpdateForm (props) {
                 <input placeholder="Name" value={props.name} onChange={props.handleInput}/>
                 <input placeholder="Email" value={props.email} onChange={props.handleInput}/>
                 <input placeholder="Age" value={props.age} onChange={props.handleInput}/>
-                <button onClick={() => props.updateFriend(friend.id)}>Update Friend</button>
+                <Link to="/">
+                    <div>
+                        <button onClick={() => props.updateFriend(friend.id)}>Update Friend</button>
+                    </div>
+                </Link>
             </form>
         </div>
     );
